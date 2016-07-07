@@ -6,16 +6,11 @@ class Post < ActiveRecord::Base
     message: "bad cato"}
   validate :clickbaity?, on: :create
 
-  CLICKBAIT_PATTERNS = [
-    /Won't Believe/i,
-    /Secret/i,
-    /Top [0-9]*/i,
-    /Guess/i
-  ]
 
   def clickbaity?
-    if CLICKBAIT_PATTERNS.none? { |pat| pat.match title }
-      errors.add(:title, "must be clickbait")
+    bait = [/Won't Believe/, /Secret/, /Top/, /Guess/]
+    if bait.none? { |phrase| phrase.match title }
+      errors.add(:non_clickbait, "MOAR CLICKBAIT")
     end
   end
 
